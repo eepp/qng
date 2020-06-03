@@ -56,8 +56,9 @@ class _PartialName:
 
 
 class _FullName:
-    def __init__(self, name, surname, gender):
+    def __init__(self, name, surname, gender, middle_name=None):
         self._name = name
+        self._middle_name = middle_name
         self._surname = surname
         self._gender = gender
 
@@ -66,12 +67,21 @@ class _FullName:
         return self._name
 
     @property
+    def middle_name(self):
+        return self._middle_name
+
+    @property
     def surname(self):
         return self._surname
 
     @property
     def gender(self):
         return self._gender
+
+    @property
+    def middle_initial(self):
+        assert self._middle_name is not None
+        return self._middle_name[0].upper()
 
 
 def _cat_file_to_objs(cat_filename, create_obj_func):
@@ -94,7 +104,7 @@ def _cat_file_to_objs(cat_filename, create_obj_func):
     return objs
 
 
-def _random_std_fullname(surname_count, gender):
+def _random_std_fullname(surname_count, with_middle_name, gender):
     name_objs = []
 
     if gender is None or gender == _Gender.MALE:
@@ -107,10 +117,11 @@ def _random_std_fullname(surname_count, gender):
 
     surname_objs = _cat_file_to_objs('std-surnames',
                                      lambda n, s: _PartialName(s))
-    rand_name_obj = random.choice(name_objs)
+    rand_name_objs = random.sample(name_objs, 2 if with_middle_name else 1)
     rand_surname_objs = random.sample(surname_objs, surname_count)
     surname = '-'.join([obj.name for obj in rand_surname_objs])
-    return _FullName(rand_name_obj.name, surname, rand_name_obj.gender)
+    return _FullName(rand_name_objs[0].name,surname, rand_name_objs[0].gender,
+	               rand_name_objs[1].name if with_middle_name else None)
 
 
 def _random_cat_fullname(cat_name, gender):
@@ -155,10 +166,17 @@ def _parse_args():
                         help='Category name')
     parser.add_argument('--double-surname', '-d', action='store_true',
                         help='Create a double-barrelled surname (only available for the `std` category)')
+    parser.add_argument('--middle-initial', '-I', action='store_true',
+                        help='Generate a middle initial (only available for the `std` category)')
+    parser.add_argument('--middle-name', '-M', action='store_true',
+                        help='Generate a middle name (only available for the `std` category)')
     args = parser.parse_args()
 
     if sum([0 if args.gender is None else 1, args.male, args.female]) > 1:
         raise _CliError('Cannot specify more than one option amongst `--gender`, `--male`, and `--female`.')
+
+    if args.middle_name and args.middle_initial:
+        raise _CliError('Cannot specify more than one option amongst `--middle-initial` and `--middle-name`.')
 
     if args.male:
         args.gender = 'male'
@@ -170,6 +188,8 @@ def _parse_args():
         args.gender = _Gender.MALE
     elif args.gender == 'female':
         args.gender = _Gender.FEMALE
+    else:
+        args.gender = random.choice([_Gender.MALE, _Gender.FEMALE])
 
     if sum([args.kebab_case, args.snake_case, args.camel_case, args.cap_camel_case]) > 1:
         raise _CliError('Cannot specify more than one option amongst `--snake-case`, `--kebab-case`, `--camel-case`, and `--cap-camel-case`.')
@@ -218,6 +238,12 @@ def _parse_args():
     if args.double_surname and 'std' not in real_cats:
         raise _CliError('Cannot specify `--double-surname` without the `std` category.')
 
+    if args.middle_name and 'std' not in real_cats:
+        raise _CliError('Cannot specify `--middle-name` without the `std` category.')
+
+    if args.middle_initial and 'std' not in real_cats:
+        raise _CliError('Cannot specify `--middle-initial` without the `std` category.')
+
     args.cat = real_cats
     return args
 
@@ -244,8 +270,19 @@ class _Format(enum.Enum):
     CAP_CAMEL = 4
 
 
-def _format_name(fullname, fmt=_Format.DEFAULT):
-    raw_name = '{} {}'.format(fullname.name, fullname.surname)
+def _format_name(fullname, fmt=_Format.DEFAULT, with_middle_name_initial=True):
+
+    if fullname.middle_name is None:
+        raw_name = '{} {}'.format(fullname.name, fullname.surname)
+    else:
+        middle_initial = fullname.middle_initial
+
+        if fmt == _Format.DEFAULT:
+            middle_initial += '.'
+
+        raw_name = '{} {} {}'.format(fullname.name,
+                                     middle_initial if with_middle_name_initial else fullname.middle_name,
+                                     fullname.surname)
 
     if fmt == _Format.DEFAULT:
         return raw_name
@@ -270,6 +307,7 @@ def _run(args):
 
         if cat == 'std':
             rand_fullname = _random_std_fullname(2 if args.double_surname else 1,
+                                                 args.middle_name or args.middle_initial,
                                                  args.gender)
         else:
             rand_fullname = _random_cat_fullname(cat, args.gender)
@@ -281,7 +319,7 @@ def _run(args):
         raise _CliError('No name found.')
 
     rand_fullname = random.choice(rand_fullnames)
-    print(_format_name(rand_fullname, args.fmt))
+    print(_format_name(rand_fullname, args.fmt, args.middle_initial))
 
 
 def _main():
