@@ -245,20 +245,16 @@ class _Format(enum.Enum):
 
 
 def _format_name(fullname, fmt=_Format.DEFAULT):
+    raw_name = '{} {}'.format(fullname.name, fullname.surname)
+
     if fmt == _Format.DEFAULT:
-        string = '{} {}'.format(fullname.name, fullname.surname)
+        return raw_name
     elif fmt == _Format.SNAKE:
-        name = _normalize_name(fullname.name, '_')
-        surname = _normalize_name(fullname.surname, '_')
-        string = '{}_{}'.format(name, surname)
+        return _normalize_name(raw_name, '_')
     elif fmt == _Format.KEBAB:
-        name = _normalize_name(fullname.name, '-')
-        surname = _normalize_name(fullname.surname, '-')
-        string = '{}-{}'.format(name, surname)
+        return _normalize_name(raw_name, '-')
     elif fmt == _Format.CAMEL or fmt == _Format.CAP_CAMEL:
-        name = _normalize_name(fullname.name, '', False)
-        surname = _normalize_name(fullname.surname, '', False)
-        string = '{}{}'.format(name, surname)
+        string = _normalize_name(raw_name, '', False)
 
         if fmt == _Format.CAMEL:
             string = string[0].lower() + string[1:]
