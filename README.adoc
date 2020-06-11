@@ -24,51 +24,62 @@ with community contributions, so this fork is necessary.
   and surnames, from an existing https://uda.ca/[UDA] directory
   member name, and/or from other lists:
 +
+====
 ----
 $ qngng
 ----
-+
+
 ----
 Théodore Banville
 ----
+====
 +
+====
 ----
 $ qngng --cat=uda-singers
 ----
-+
+
 ----
 Daniel Boucher
 ----
+====
 +
+====
 ----
 $ qngng --cat=lbl
 ----
-+
+
 ----
 Stéphane-Albert Boulais
 ----
+====
 +
+====
 ----
 $ qngng --cat=icip
 ----
-+
+
 ----
 René Homier-Roy
 ----
+====
 +
 You can mix categories:
 +
+====
 ----
 $ qngng --cat=uda-singers --cat=std
 ----
-+
+
 ----
 Karl-Hugo Van De Kerckhove
 ----
+====
 +
 The available categories are:
 +
 --
+[horizontal]
 `all`::
     All the categories.
 
@@ -99,82 +110,100 @@ The available categories are:
 
 * Generate a random male or female name:
 +
+====
 ----
 $ qngng --female
 ----
-+
+
 ----
 Karen Cusson
 ----
+====
 +
+====
 ----
 $ qngng --male --cat=uda-hosts
 ----
-+
+
 ----
-Louis-Francois Marcotte
+Claude Poirier
 ----
+====
 
 * For the `std` (default) category, generate a double-barreled surname,
   a middle name, or a middle initial:
 +
+====
 ----
 $ qngng --double-surname
 ----
-+
+
 ----
 Josiane Fiset-Bellerose
 ----
+====
 +
+====
 ----
 $ qngng --middle-name --female
 ----
-+
+
 ----
 Geneviève Margot Chartier
 ----
+====
 +
+====
 ----
 $ qngng --middle-initial
 ----
-+
+
 ----
 Coralie D. Trépanier
 ----
+====
 
 * Print the generated name with various formats:
 +
+====
 ----
 $ qngng --snake-case
 ----
-+
+
 ----
 laura_viau
 ----
+====
 +
+====
 ----
 $ qngng --kebab-case --cat=uda
 ----
-+
+
 ----
 michel-mpambara
 ----
+====
 +
+====
 ----
 $ qngng --camel-case --female --double-surname
 ----
-+
+
 ----
 clemenceBriseboisGroulx
 ----
+====
 +
+====
 ----
 $ qngng --cap-camel-case --male --cat=sn
 ----
-+
+
 ----
 MarcArcand
 ----
+====
 
 See `qngng --help` for the complete list of options.
 
