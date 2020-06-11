@@ -2,7 +2,7 @@
 
 = qngng
 Philippe Proulx <https://eepp.ca/>
-:toc:
+:toc: left
 
 [.normal]
 image:https://img.shields.io/pypi/v/qngng.svg?label=Latest%20version[link="https://pypi.python.org/pypi/qngng"]
