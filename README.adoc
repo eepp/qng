@@ -115,7 +115,8 @@ $ qngng --male --cat=uda-hosts
 Louis-Francois Marcotte
 ----
 
-* For the `std` (default) category, generate a double-barreled surname:
+* For the `std` (default) category, generate a double-barreled surname,
+  a middle name, or a middle initial:
 +
 ----
 $ qngng --double-surname
@@ -123,6 +124,22 @@ $ qngng --double-surname
 +
 ----
 Josiane Fiset-Bellerose
+----
++
+----
+$ qngng --middle-name --female
+----
++
+----
+Geneviève Margot Chartier
+----
++
+----
+$ qngng --middle-initial
+----
++
+----
+Coralie D. Trépanier
 ----
 
 * Print the generated name with various formats:
