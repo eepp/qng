@@ -272,17 +272,23 @@ class _Format(enum.Enum):
 
 def _format_name(fullname, fmt=_Format.DEFAULT, with_middle_name_initial=True):
 
-    if fullname.middle_name is None:
-        raw_name = '{} {}'.format(fullname.name, fullname.surname)
-    else:
+    parts = []
+
+    if fullname.name:
+        parts.append(fullname.name);
+
+    if fullname.middle_name:
         middle_initial = fullname.middle_initial
 
         if fmt == _Format.DEFAULT:
             middle_initial += '.'
 
-        raw_name = '{} {} {}'.format(fullname.name,
-                                     middle_initial if with_middle_name_initial else fullname.middle_name,
-                                     fullname.surname)
+        parts.append(middle_initial if with_middle_name_initial else fullname.middle_name)
+
+    if fullname.surname:
+        parts.append(fullname.surname);
+
+    raw_name = ' '.join(parts)
 
     if fmt == _Format.DEFAULT:
         return raw_name
