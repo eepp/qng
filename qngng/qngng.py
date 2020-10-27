@@ -213,6 +213,8 @@ def _parse_args():
         'lbl',
         'sn',
         'icip',
+        'd31',
+        'dug',
     }
     grouping_cats = {
         'all',
