@@ -83,6 +83,12 @@ The available categories are:
 `all`::
     All the categories.
 
+`d31`::
+    https://www.imdb.com/title/tt5954206/[District 31] characters.
+
+`dug`::
+    https://www.imdb.com/title/tt0278857/[Dans une galaxie près de chez vous] characters.
+
 `icip`::
     https://ici.radio-canada.ca/premiere[ICI Première] personalities.
 
@@ -236,6 +242,12 @@ The commands are installed in `~/.local/bin`.
 == Name sources
 
 The data sources of qngng are:
+
+`d31` category::
+    IMDB's https://www.imdb.com/title/tt5954206/[District 31].
+
+`dug` category::
+    FANDOM's https://dansunegalaxie.fandom.com/fr/wiki/Accueil[Dans une galaxie près de chez vous] wiki.
 
 `icip` category::
     https://ici.radio-canada.ca/premiere/emissions[List of
