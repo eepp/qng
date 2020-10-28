@@ -170,6 +170,8 @@ def _parse_args():
                         help='Generate a middle initial (only available for the `std` category)')
     parser.add_argument('--middle-name', '-M', action='store_true',
                         help='Generate a middle name (only available for the `std` category)')
+    parser.add_argument('--version', '-V', action='version', version=f'qngng {qngng.__version__}',
+                        help='Show version and quit')
     args = parser.parse_args()
 
     if sum([0 if args.gender is None else 1, args.male, args.female]) > 1:
